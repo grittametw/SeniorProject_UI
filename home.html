@@ -1,0 +1,941 @@
+<!-- Escrito en caché: Wed, 06 Mar 2024 00:35:34 (/image-color-picker - fde0c6a2edd5dac86153d360d9d77553) --> 
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Test Color</title>
+    <meta name="description" content="Pick color from image" />
+    <meta name="robots" content="noodp,index,follow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://pinetools.com/files/styles.css" />
+<style>
+    #header {
+		background-color: #6f4990;
+		background-position: left center;
+		background-image: url('https://pinetools.com/files/header.png'), linear-gradient(45deg, #6f4990, #78195a);
+	}
+</style>
+<link rel="shortcut icon" href="https://pinetools.com/files/favicon.ico" type="image/x-icon">
+<link rel="icon" href="https://pinetools.com/files/favicon.ico" type="image/x-icon">
+<link rel="canonical" href="https://pinetools.com/image-color-picker" />
+
+<meta property="og:url" content="https://pinetools.com/image-color-picker" />
+
+<meta property="og:title" content="Online Image color picker" />
+<meta property="og:description" content="Pick color from image" /> 
+<meta property="og:site_name" content="PineTools" />
+<meta name="twitter:site" content="@PineToolsOk" />
+<meta property="twitter:account_id" content="729808095636037632" />
+<meta property="fb:page_id" content="1739859106232099" />
+<meta property="fb:admins" content="100003315561495" />
+
+<meta property="twitter:title" content="Online Image color picker" />
+<meta property="twitter:description" content="Pick color from image" /> 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<script>window.onerror=function(){var a=arguments;$.post("https://pinetools.com/ajax",{logjs:JSON.stringify({url:document.location.href,message:a[0],source:a[1],pos:{l:a[2],c:a[3]},stack:a[4].stack})});};</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.min.js"></script>
+
+<script src="https://pinetools.com/files/scrolling/jquery.jscrollpane.min.js"></script>
+<script src="https://pinetools.com/files/scrolling/jquery.mousewheel.js"></script>
+<link type="text/css" href="https://pinetools.com/files/scrolling/jquery.jscrollpane.css" rel="stylesheet" media="all" />
+
+<script src="https://pinetools.com/files/main.js"></script>
+
+<script>window.twttr = (function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0],
+			t = window.twttr || {};
+		  if (d.getElementById(id)) return t;
+		  js = d.createElement(s);
+		  js.id = id;
+		  js.src = "https://platform.twitter.com/widgets.js";
+		  fjs.parentNode.insertBefore(js, fjs);
+
+		  t._e = [];
+		  t.ready = function(f) {
+			t._e.push(f);
+		  };
+
+		  return t;
+		}(document, "script", "twitter-wjs"));</script>
+
+<script async src="https://platform.linkedin.com/in.js"></script>
+
+<script async defer src="//assets.pinterest.com/js/pinit.js"></script>
+
+<script>
+    (function(){
+        let replace_url = function(text){
+            let url = window.location.href;
+            let title = document.title;
+            let url_text = title + ': ' + url;
+            return text
+            .replace("URL_ENCODED", encodeURIComponent(url))
+            .replace("TITLE_ENCODED", encodeURIComponent(title))
+            .replace("URL_TEXT_ENCODED", encodeURIComponent(url_text));
+        };
+        $(document).ready(function(){
+            $(".social-widgets a").each(function(){
+                $(this).attr("href", replace_url($(this).attr("href")));
+            });
+        });
+    })();
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script src="https://pinetools.com/files/jqimg/jqimg.js"></script>
+<script src="https://pinetools.com/files/spectrum/spectrum.js"></script>
+<script src="https://pinetools.com/files/spectrum/myColorPicker.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://pinetools.com/files/jqimg/jqimg.css">
+<link rel="stylesheet" href="https://pinetools.com/files/spectrum/spectrum.css">
+<script>window.misWidgets = new Object;</script><script>
+				function resetFormElement(e){
+					e.wrap('<form>').closest('form').get(0).reset();
+					e.unwrap();
+				}
+				function loadInputImage(id, tipo, nombre){
+					resetFormElement($("#" + id + "-ii-drop-paste-area"));
+					window.misWidgets[id] = new Object;
+					window.misWidgets[id].onChange = function(){};
+
+					(function(){
+
+						var canvas = (document.getElementById(id));
+						var dropPasteArea = (document.getElementById(id + "-ii-drop-paste-area"));
+						var fileElem = (document.getElementById(id + "-ii-input-file"));
+						var input = (document.getElementById(id + "-ii-input-text"));
+						var errorMessage = (document.getElementById(id + "-ii-error-msg"));
+
+						canvas.width = 0;
+
+						["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
+							preventDefaults = function(e) {
+								e.preventDefault();
+								e.stopPropagation();
+							};
+							dropPasteArea.addEventListener(eventName, preventDefaults, false);
+							document.body.addEventListener(eventName, preventDefaults, false);
+						});
+
+						["dragenter", "dragover"].forEach(eventName => {
+							dropPasteArea.addEventListener(eventName, function(e) {
+								dropPasteArea.classList.add("highlight");
+							}, false);
+						});
+
+						["dragleave", "drop"].forEach(eventName => {
+							dropPasteArea.addEventListener(eventName, function(e) {
+								dropPasteArea.classList.remove("highlight");
+							}, false);
+						});
+
+						dropPasteArea.addEventListener("drop", function(e) {
+							var dt = e.dataTransfer;
+							var files = dt.files;
+							handleFiles(files);
+						}, false);
+
+						function loadImage(imageSrc, imageFileType){
+							ii_hide_error();
+							divImage = $('#'+id+'-div-image');
+							divImage.empty();
+							imagen = document.createElement('img');
+							imagenJq = $(imagen);
+							imagenJq.appendTo(divImage);
+							imagenJq.attr('id', id+'-image');
+							imagen.onload = function(){
+								canvas.width = imagen.width;
+								canvas.height = imagen.height;
+								canvas.getContext('2d').drawImage(imagen, 0, 0);
+								// hago que la imagen se convierta en una herramienta
+								if(tipo == 'area')
+									propsJqImg = { pick: 'area', onChange: function(){ (window.misWidgets[id].onChange)(nombre+".area"); } };
+								if(tipo == 'point')
+									propsJqImg = { pick: 'point', onChange: function(){ (window.misWidgets[id].onChange)(nombre+".point"); } };
+								if(tipo == 'ninguno')
+									propsJqImg = {};
+								let texts = {"zoom_in":"Zoom in: click on the image to enlarge it","zoom_out":"Zoom out: click on the image to decrease its size","zoom_ajust":"Fit to area: scale to match the viewport size","zoom_real":"Actual size: pixel to pixel, 1:1","mover":"Hand tool: drag to move the image within the viewport","pick_point":"Select point: choose a specific point on the image","save_image_format":"Save image as %","copy_clipboard":"Copy image to clipboard","copied":"Copied!"};
+								propsJqImg['texts'] = texts;
+								imagenJq.jqImg(propsJqImg);
+								window.misWidgets[id].getC = imagenJq.getCoord;
+								window.misWidgets[id].imageFileType = imageFileType;
+								(window.misWidgets[id].onChange)(nombre+".image");
+								window.redrawMasonry();
+							}
+							imagenJq.css('width', '');
+							imagenJq.css('height', '');
+							imagenJq.css('display', '');
+							imagen.src = imageSrc;
+						}
+
+						function handleFiles(files) {
+							files = [...files];
+							files.forEach(previewFile);
+						}
+
+						fileElem.addEventListener("change", function() {
+							handleFiles(fileElem.files);
+						}, false);
+
+						var startLoadImg = function(){ document.body.classList.add("loading-img"); }
+						var endLoadImg = function(){ document.body.classList.remove("loading-img"); }
+
+						function previewFile(blob) {
+							if(!blob.type.startsWith("image/")){
+								ii_error("The file is not an image, or the image format is not supported.");
+								return;
+							}
+							startLoadImg();
+							var reader = new FileReader();
+							reader.onload = function(event) {
+								loadImage(event.target.result, blob.type);
+								input.setAttribute("currentimageurl", "");
+								input.value = "";
+								endLoadImg();
+							}
+							reader.readAsDataURL(blob);
+						}
+
+						function previewURL(str) {
+							if(str == ""){
+								ii_vaciar();
+								return;
+							}
+							current = input.getAttribute("currentimageurl");
+							if(str != current){
+								startLoadImg();
+								/*console.log("Descarga de imagen nueva!");*/
+								input.setAttribute("currentimageurl", str);
+								let img = document.createElement("img");
+								img.crossOrigin = "anonymous";
+								img.onload = function(event) {
+									var canvas = document.createElement("canvas");
+									canvas.width = img.width;
+									canvas.height = img.height;
+									context = canvas.getContext("2d");
+									context.drawImage(img, 0, 0);
+									imageFileType = "image/png";
+									dataURL = canvas.toDataURL(imageFileType);
+									loadImage(dataURL, imageFileType);
+									endLoadImg();
+								};
+								img.onerror = function(event) {
+									ii_error("We couldn't download the image. You could try downloading it to your device and then loading the image file locally.");
+									endLoadImg();
+								};
+								original_url = str;
+								cors_url = "https://corsproxy.io/?" + encodeURIComponent(original_url);
+								img.src = cors_url;
+							}
+						}
+
+						dropPasteArea.addEventListener("paste", function(event) {
+							var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+							var match = false;
+							for (index in items) {
+								var item = items[index];
+								if (item.kind === "file" && item.type.startsWith("image/")) {
+									match = true;
+									var blob = item.getAsFile();
+									previewFile(blob);
+								} else {
+									if (item.kind === "string" && item.type === "text/plain") {
+										match = true;
+										item.getAsString((str) => {
+											input.value = str;
+											if(document.activeElement === input){
+												input.blur();
+											} else {
+												event = new Event("change", { "bubbles": false });
+												input.dispatchEvent(event);
+											}
+										});
+									}
+								}
+							}
+							if (!match) {
+								ii_error("We couldn't paste the image. You could try saving it to your device and then loading the image file locally.");
+							}
+						});
+
+						input.addEventListener("change", function(e) {
+							previewURL(input.value);
+						}, false);
+						
+						function ii_vaciar(){
+							divImage = $('#'+id+'-div-image');
+							divImage.empty();
+							/*resetFormElement($("#" + id + "-ii-input-file"));*/
+							/*input.value = "";*/
+							canvas.width = 0;
+							window.redrawMasonry();
+						}
+
+						function ii_error(msg){
+							ii_vaciar();
+							errorMessage.innerHTML = msg.replace(". ", ".<br />");
+							$(errorMessage).show();
+							window.redrawMasonry();
+						}
+
+						function ii_hide_error(){
+							$(errorMessage).hide();
+							window.redrawMasonry();
+						}
+
+					})();
+				}
+			</script><script></script><script> $(document).ready( function(){ ((function(){
+				loadInputImage('65e7e48626202', 'point', 'image');
+			})());((function(){
+				var myColPick = $((document.getElementById('65e7e4862620c'))).myColorPicker({
+					valuesElement: $((document.getElementById('65e7e4862620c-div-color-values')))
+				});
+				$('#65e7e4862620c').val('#0066CC').change();
+				window.redrawMasonry();
+			})()); ((function(){
+ window.apply = function(){ if((!((window.location.hostname.length) == 13))) v65e7e48626243 = v65e7e48626246.contexto;if((!(!((!((!((document.domain.length) == 13)))))))) v65e7e4862625c = ((function(){
+				var oldCanvas = (document.getElementById('65e7e48626202'));
+				var oldCtx = oldCanvas.getContext("2d");
+				var newCanvas = document.createElement("canvas");
+				var newCtx = newCanvas.getContext("2d");
+				newCanvas.width = oldCanvas.width;
+				newCanvas.height = oldCanvas.height;
+				newCtx.drawImage(oldCanvas, 0, 0);
+				return {
+					imageFileType: window.misWidgets['65e7e48626202'].imageFileType,
+					canvas: newCanvas,
+					contexto: newCtx,
+					array: newCtx.getImageData(0, 0, newCtx.canvas.width, newCtx.canvas.height),
+					coord: window.misWidgets['65e7e48626202'].getC()
+				};
+			})());if((!((document.getElementsByClassName('cont-o').length) != 0))) v65e7e48626266 = ((function(){
+				var oldCanvas = (document.getElementById('65e7e48626202'));
+				var oldCtx = oldCanvas.getContext("2d");
+				var newCanvas = document.createElement("canvas");
+				var newCtx = newCanvas.getContext("2d");
+				newCanvas.width = oldCanvas.width;
+				newCanvas.height = oldCanvas.height;
+				newCtx.drawImage(oldCanvas, 0, 0);
+				return {
+					imageFileType: window.misWidgets['65e7e48626202'].imageFileType,
+					canvas: newCanvas,
+					contexto: newCtx,
+					array: newCtx.getImageData(0, 0, newCtx.canvas.width, newCtx.canvas.height),
+					coord: window.misWidgets['65e7e48626202'].getC()
+				};
+			})());if((!((!((document.getElementsByClassName('busq-cell-a').length) == 0))))) v65e7e4862626e = function(a){ return "#" + ( (a[0] > 255 || a[1] > 255 || a[2] > 255) ? "000000" : (((new Array(6+1).join("0")) + ((a[0] << 16 | a[1] << 8 | a[2]).toString(16))).slice(-6)) ); };if((!((document.domain.charAt(2)) == 'n'))) ($('#65e7e4862620c').val(v65e7e48626276).change());if((!(!((window.location.hostname.substring(0, 1)) == 'p')))) v65e7e4862627e = v65e7e4862625c.contexto;if((!((document.getElementById('hasta-42')) != null))) v65e7e48626285 = v65e7e48626286.coord;if((!((!((window.location.hostname.length) != 13))))) v65e7e4862628b = function(a){ return "#" + ( (a[0] > 255 || a[1] > 255 || a[2] > 255) ? "000000" : (((new Array(6+1).join("0")) + ((a[0] << 16 | a[1] << 8 | a[2]).toString(16))).slice(-6)) ); };if((!(!((window.location.hostname.length) == 13)))) v65e7e48626290 = v65e7e4862625c.coord;if((!((document.getElementsByClassName('cont-lang-select').length) != 0))) v65e7e48626296 = v65e7e48626297.coord;if((!((document.getElementById('wrapper')) != null))) v65e7e4862629b = v65e7e4862629c.getImageData(v65e7e4862629d.x, v65e7e4862629e.y, 1, 1).data;if((!((window.location.hostname.length) == 13))) v65e7e486262a3 = v65e7e486262a4.coord;if((!(!((!((document.getElementById('wrapper')) == null)))))) v65e7e486262a9 = v65e7e4862627e.getImageData(v65e7e48626290.x, v65e7e48626290.y, 1, 1).data;if((!((document.getElementById('hasta-42')) != null))) v65e7e486262af = v65e7e486262b0.slice(0, 3);if((!((document.getElementsByClassName('cont-o').length) != 0))) v65e7e486262b4 = v65e7e486262b5.contexto;if((!((!((!((document.getElementsByClassName('cont-lang-select').length) != 0))))))) v65e7e486262bb = v65e7e486262bc(v65e7e486262bd);if((!(!((!((!((document.domain.length) == 13)))))))) v65e7e486262c3 = function(a){ return "#" + ( (a[0] > 255 || a[1] > 255 || a[2] > 255) ? "000000" : (((new Array(6+1).join("0")) + ((a[0] << 16 | a[1] << 8 | a[2]).toString(16))).slice(-6)) ); };if((!((document.domain.charAt(0)) == 'p'))) v65e7e486262c9 = v65e7e486262ca.coord;if((!((window.location.hostname.length) == 13))) v65e7e486262ce = function(a){ return "#" + ( (a[0] > 255 || a[1] > 255 || a[2] > 255) ? "000000" : (((new Array(6+1).join("0")) + ((a[0] << 16 | a[1] << 8 | a[2]).toString(16))).slice(-6)) ); };if((!((document.getElementById('right-column-main')) != null))) v65e7e486262d2 = v65e7e486262d3(v65e7e486262d5);if((!((document.getElementById('right-column-main')) != null))) v65e7e486262db = v65e7e486262dd.getImageData(v65e7e486262df.x, v65e7e486262e0.y, 1, 1).data;if((!(!((!((!((!((!((window.location.hostname.length) == 13)))))))))))) v65e7e486262a9 = v65e7e486262a9.slice(0, 3);if((!((!((document.getElementById('desde-42')) == null))))) v65e7e486262f2 = v65e7e486262f3(v65e7e486262f4);if((!(!((document.getElementById('boton-menu')) != null)))) v65e7e486262f8 = v65e7e486262c3(v65e7e486262a9);if((!((!((!((document.domain.length) == 13))))))) ($('#65e7e4862620c').val(v65e7e48626300).change());if((!((!((document.getElementById('hasta-42')) == null))))) v65e7e48626304 = function(a){ return "#" + ( (a[0] > 255 || a[1] > 255 || a[2] > 255) ? "000000" : (((new Array(6+1).join("0")) + ((a[0] << 16 | a[1] << 8 | a[2]).toString(16))).slice(-6)) ); };if((!((!((document.getElementsByClassName('cont-lang-select').length) == 0))))) v65e7e48626309 = function(a){ return "#" + ( (a[0] > 255 || a[1] > 255 || a[2] > 255) ? "000000" : (((new Array(6+1).join("0")) + ((a[0] << 16 | a[1] << 8 | a[2]).toString(16))).slice(-6)) ); };if((!(!((document.getElementsByClassName('cont-lang-select').length) != 0)))) ($('#65e7e4862620c').val(v65e7e486262f8).change()); };
+window.misWidgets['65e7e48626202'].onChange = function(iefh86fwegiwgyrg){if((!((document.getElementsByClassName('tab-tab').length) != 0))) apply();if((!((window.location.hostname.charAt(12)) == 'm'))) apply();if((!(!((!((!((document.domain.length) == 13)))))))) apply();};})()); }); </script><script>function execute(antes, despues){ antes(); setTimeout(function(){(function(){if((!((document.getElementById('65e7e48626202')).width != 0)) && ((function(){ return $("#div-grid-elemento-65e7e48626202").is(":visible"); })())){ elemIncompleto('65e7e48626202', 'image');  } else { if((!((document.domain.length) == 13))) apply();if((!((!((!((document.getElementsByClassName('cont-lang-select').length) != 0))))))) apply();if((!((!((window.location.hostname.length) != 13))))) apply();if((!(!((window.location.hostname.length) == 13)))) apply(); }})(); despues(); }, 100); }</script><style>
+				body.loading-img * { cursor: wait !important; }
+
+				.ii-drop-paste-area {
+					background-color: #f5f5f5;
+					border: 3px #ccc dashed;
+					margin-bottom: 15px;
+					overflow: hidden;
+				}
+
+				.ii-drop-paste-area.highlight {
+					border-color: #0f69d0;
+					background-color: #e5f0fa;
+				}
+
+				.ii-drop-paste-area {
+					transition: border-color 0.25s, background-color 0.25s;
+				}
+
+				body.loading-img .ii-drop-paste-area {
+					pointer-events: none;
+				}
+
+				.ii-drop-paste-area label {
+					display: flex;
+					padding: 16px 14px;
+				}
+
+				.ii-drop-paste-area label > div:first-child { /* ...mobile styles here... */
+					width: 100%;
+					padding-top: 0px;
+				}
+
+				.ii-drop-paste-area label > div:last-child { /* ...mobile styles here... */
+					display: none;
+				}
+
+				@media screen and (min-width: 600px){
+
+					.ii-drop-paste-area label > div { /* ...desktop styles here... */
+						align-self: center;
+					}
+
+					.ii-drop-paste-area label > div:first-child { /* ...desktop styles here... */
+						flex: 0 0 60%;
+					}
+
+					.ii-drop-paste-area label > div:last-child { /* ...desktop styles here... */
+						display: block;
+						flex: 0 0 40%;
+						padding-left: 14px;
+						text-align: center;
+						font-weight: bold;
+						font-size: 18px;
+						color: #949494;
+						line-height: 1.3em;
+					}
+
+				}
+
+				.ii-drop-paste-area input {
+					display: block;
+					width: 100%;
+				}
+
+				.ii-drop-paste-area input[type="file"] {
+					margin-bottom: 18px;
+				}
+
+				.ii-drop-paste-area input[type="text"] {
+					border: 1px #CCC solid;
+					padding: 3px 12px;
+				}
+
+				.ii-drop-paste-area input[type="text"]:focus {
+					border-color: #4796E5;
+					outline: 2px solid #d2f0ff;
+				}
+
+				.ii-drop-paste-area svg {
+					width: 24.5%;
+					max-width: 45px;
+					margin: 0 auto 0 auto;
+					fill: #73cc97;
+					display: block;
+					margin-bottom: 8px;
+				}
+
+				.widget-ii-error-msg {
+					display: none;
+					background-color: #ffe8e8;
+					padding: 10px 20px;
+					font-weight: bold;
+					color: #dd3f3f;
+					text-align: center;
+					box-shadow: 0 -2px 0px 0px #ffcdcd inset;
+					margin-bottom: 10px;
+					border-radius: 8px;
+				}
+			
+
+</style>
+
+<script>
+					(function(){
+						var bsa_optimize=document.createElement('script');
+						bsa_optimize.type='text/javascript';
+						bsa_optimize.async=true;
+						bsa_optimize.src='https://cdn4.buysellads.net/pub/pinetools.js?'+(new Date()-new Date()%600000);
+						(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(bsa_optimize);
+					})();
+				</script>
+<script>
+					(function(){
+						$(document).ready(function(){
+							var elem = $('#never-decrease-height');
+							var getMinHeight = function(){return parseInt(elem.css('min-height')); };
+							var setMinHeight = function(n){ elem.css('min-height', n + 'px'); };
+							var getCurrentHeight = function(){return elem.height(); };
+							setInterval(function(){ setMinHeight(Math.max(getMinHeight(), getCurrentHeight())); }, 1000);
+						});
+					})();
+				</script>
+<script>
+					setInterval(function() {
+						var img_test = document.createElement('img');
+						img_test.style.display = 'none';
+						document.body.appendChild(img_test);
+						if(img_test.parentElement == null){
+							$('body>iframe').each(function(i, obj) {
+								if(obj.src.indexOf('loader.') + obj.src.indexOf('btl') != -2) obj.parentNode.removeChild(obj);
+							});
+						} else {
+							document.body.removeChild(img_test);
+						}
+					}, 500);
+				</script>
+</head>
+<body class="lang_en">
+<script>
+			(function(){
+				function read_theme(){
+					const persistedColorPreference = window.localStorage.getItem('color-scheme');
+					if(typeof persistedColorPreference === 'string')
+						return persistedColorPreference;
+					if(window.matchMedia('(prefers-color-scheme: dark)').matches)
+						return 'dark';
+					return 'light';
+				}
+				if(read_theme() == 'dark'){
+					document.body.classList.add("dark_mode");
+				}
+				window.setInterval(function(){
+					const applied_theme = document.body.classList.contains("dark_mode") ? 'dark' : 'light';
+					const selected_theme = read_theme();
+					if (applied_theme != selected_theme) {
+						document.body.classList.toggle("dark_mode");
+					}
+				}, 1000);
+				window.dark_mode = function(action){
+					switch (action) {
+					  case 'toggle':
+						document.body.classList.toggle("dark_mode"); break;
+					  case 'on':
+						document.body.classList.add("dark_mode"); break;
+					  case 'off':
+						document.body.classList.remove("dark_mode"); break;
+					}
+					const theme = document.body.classList.contains("dark_mode") ? 'dark' : 'light';
+					window.localStorage.setItem('color-scheme', theme);
+					return false;
+				}
+			})();
+		</script>
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v11.0&appId=391924175647213&autoLogAppEvents=1" nonce="oxoGI1SA"></script>
+<div id="wrapper">
+<div id="header">
+<div id="logo">
+<h1><a href="https://pinetools.com/" title="PineTools homepage">PineTools.com</a></h1>
+</div>
+<div id="boton-menu">
+<button onclick="clickMenu();">Menu</button>
+</div>
+<div id="desde-42" class="desplazable"> 
+<div class="tab-tab">
+<div class="cont-lang-select">
+<ul class="lang-select">
+<li>
+<span class="lang_en">EN</span>
+<ul>
+<li><a href="https://pinetools.com/" title="PineTools (English)" class="lang_en lang_sel">English</a></li><li><a href="https://pinetools.com/es/" title="PineTools (Español)" class="lang_es ">Español</a></li></ul>
+</li>
+</ul>
+</div>
+<div class="cont-dark-mode-switch">
+    <label onclick="return dark_mode('on');">Dark mode</label>
+    <a href="#" title="Dark mode" class="dark-mode-switch" onclick="return dark_mode('toggle');"><span></span></a>
+    <label onclick="return dark_mode('off');">Light mode</label>
+</div>
+<div class="cont-busqueda">
+<form method="post" action="https://pinetools.com/search" onsubmit="return (this.q.value != '');">
+<div class="busqueda">
+<div class="busq-cell-a">
+<input type="text" name="q" placeholder="Search for tools..." />
+</div>
+<div class="busq-cell-b">
+<input type="submit" />
+</div>
+</div>
+</form>
+</div>
+<div class="cont-o">
+or </div>
+<div class="cont-suggest">
+<a href="https://pinetools.com/static#suggest-tool" title="Suggest one tool">Suggest one <span>tool</span></a>
+</div>
+</div>
+</div>
+</div>
+<div id="row-main">
+<div id="left-column-main">
+<div id="menu">
+<div id="hasta-42" class="desplazable"></div>
+<div id="social-icons">
+<a href="https://www.facebook.com/PineToolsOk" title="Become a fan of PineTools" class="botFA">Facebook</a>
+<a href="https://twitter.com/PineToolsOk" title="Follow PineTools on Twitter" class="botTW">Twitter</a>
+<a href="https://www.youtube.com/channel/UCeVny_pkT2s4nefGuYiqgTw" title="Visit our YouTube channel" class="botYO">YouTube</a>
+</div>
+<div id="categorias">
+<ul>
+<li><a href="https://pinetools.com/c-mathematics/" title="Tools for common mathematical tasks">
+Mathematics
+</a></li><li><a href="https://pinetools.com/c-colors/" title="Color picker, tools for modifying or generating colors">
+Colors
+</a></li><li><a href="https://pinetools.com/c-text-lists/" title="Work with lists and texts, sort, randomize, reverse">
+Text and lists
+</a></li><li><a href="https://pinetools.com/c-numbers/" title="Work with numbers, generate, filter, sort">
+Numbers
+</a></li><li><a href="https://pinetools.com/c-date-time/" title="Measure time, calculate distance between dates, chronometers">
+Date and time
+</a></li><li class="cat-highlight"><a href="https://pinetools.com/c-images/" title="Resize images, crop, optimize and more">
+Images
+</a><ul><li><a href="https://pinetools.com/invert-image-colors" title="Invert image colors">
+Invert colors
+</a></li><li><a href="https://pinetools.com/flip-image" title="Flip an image, horizontally and/or vertically">
+Flip image
+</a></li><li><a href="https://pinetools.com/darken-image" title="Darken an image">
+Darken image
+</a></li><li><a href="https://pinetools.com/lighten-image" title="Lighten up an image">
+Lighten image
+</a></li><li><a href="https://pinetools.com/change-image-brightness" title="Adjust the brightness of an image">
+Change brightness
+</a></li><li><a href="https://pinetools.com/change-image-contrast" title="Adjust the contrast of an image">
+Change contrast
+</a></li><li><a href="https://pinetools.com/grayscale-image" title="Desaturate completely an image">
+Grayscale image
+</a></li><li><a href="https://pinetools.com/change-image-saturation" title="Adjust the saturation of an image">
+Change saturation
+</a></li><li><a href="https://pinetools.com/change-image-vibrance" title="Adjust the vibrance of an image">
+Change vibrance
+</a></li><li><a href="https://pinetools.com/change-image-exposure" title="Adjust the exposure of an image">
+Change exposure
+</a></li><li><a href="https://pinetools.com/adjust-gamma-image" title="Apply gamma adjustment to an image">
+Adjust gamma
+</a></li><li><a href="https://pinetools.com/sepia-effect-image" title="Sepia photo effect">
+Sepia effect
+</a></li><li><a href="https://pinetools.com/clip-image" title="Clip image effect">
+Clip image
+</a></li><li><a href="https://pinetools.com/add-noise-image" title="Add noise to an image">
+Add noise
+</a></li><li><a href="https://pinetools.com/adjust-hue-image" title="Adjust the hue of an image">
+Adjust hue
+</a></li><li><a href="https://pinetools.com/sharpen-image" title="Sharpen an image">
+Sharpen image
+</a></li><li><a href="https://pinetools.com/filters-image" title="Apply special filters">
+Special filters
+</a></li><li><a href="https://pinetools.com/channels-image" title="Modify the intensity of the color channels">
+Adjust channels
+</a></li><li><a href="https://pinetools.com/vignette-effect-image" title="Apply vignette effect">
+Vignette effect
+</a></li><li><a href="https://pinetools.com/colorize-image" title="Colorize an image using a selected color">
+Colorize image
+</a></li><li><a href="https://pinetools.com/merge-images" title="Combine images">
+Merge images
+</a></li><li><a href="https://pinetools.com/crop-image" title="Image cropping">
+Crop image
+</a></li><li><a href="https://pinetools.com/resize-image" title="Change the size of an image">
+Resize image
+</a></li><li><a href="https://pinetools.com/image-color-picker" title="Pick color from image" class="tool-highlight">
+Image color picker
+</a></li><li><a href="https://pinetools.com/get-colors-image" title="Extract the color palette from an image">
+Get colors from image
+</a></li><li><a href="https://pinetools.com/blur-image" title="Blur an image with different filters">
+Blur image
+</a></li><li><a href="https://pinetools.com/tilt-shift-effect" title="Tilt-shift effect generator">
+Tilt-shift effect
+</a></li><li><a href="https://pinetools.com/emboss-effect-image" title="Emboss effect generator">
+Emboss effect
+</a></li><li><a href="https://pinetools.com/color-emboss-effect-image" title="Color emboss effect generator">
+Color emboss effect
+</a></li><li><a href="https://pinetools.com/threshold-image" title="Threshold effect (black and white) generator">
+Threshold (black and white)
+</a></li><li><a href="https://pinetools.com/posterize-image" title="Posterize image effect">
+Posterize effect
+</a></li><li><a href="https://pinetools.com/solarize-image" title="Solarize image effect">
+Solarize effect
+</a></li><li><a href="https://pinetools.com/image-edge-detection" title="Detect edges in an image">
+Edge detection
+</a></li><li><a href="https://pinetools.com/image-edge-enhancement" title="Enhance edges in an image">
+Edge enhancement
+</a></li><li><a href="https://pinetools.com/round-corners-image" title="Cut-off corners on an image">
+Round corners on image
+</a></li><li><a href="https://pinetools.com/rotate-image" title="Rotate an image">
+Rotate image
+</a></li><li><a href="https://pinetools.com/pixelate-effect-image" title="Pixelate photo effect">
+Pixelate effect
+</a></li><li><a href="https://pinetools.com/remove-noise-image" title="Remove noise from an image">
+Remove noise
+</a></li><li><a href="https://pinetools.com/brightness-contrast-image" title="Change brightness and contrast">
+Brightness and contrast
+</a></li><li><a href="https://pinetools.com/glow-effect-image" title="Glow image effect">
+Glow effect
+</a></li><li><a href="https://pinetools.com/equalize-image" title="Increment the global contrast">
+Equalize image
+</a></li><li><a href="https://pinetools.com/adjust-hsl-image" title="Adjust the HSL of an image">
+Adjust HSL
+</a></li><li><a href="https://pinetools.com/rgb-channels-image" title="Get RGB color channels">
+RGB channels
+</a></li><li><a href="https://pinetools.com/image-histogram" title="Generate image histogram">
+Image histogram
+</a></li><li><a href="https://pinetools.com/censor-photo-blur-pixelate" title="Blur, pixelate or censor part of an image">
+Censor photo (blur, pixelate)
+</a></li><li><a href="https://pinetools.com/overlay-images" title="Fuse two images (one on top of the other)">
+Overlay images
+</a></li><li><a href="https://pinetools.com/random-bitmap-generator" title="Generate random image">
+Random bitmap generator
+</a></li><li><a href="https://pinetools.com/duotone-effect-spotify" title="Apply duotone effect to a photo">
+Duotone effect (Spotify)
+</a></li><li><a href="https://pinetools.com/split-image" title="Split an image in smaller pieces">
+Split image
+</a></li><li><a href="https://pinetools.com/qr-code-generator" title="Generates QR codes">
+QR code generator
+</a></li><li><a href="https://pinetools.com/equalize-area-image" title="Increment the contrast of an area of the image">
+Equalize image (area)
+</a></li><li><a href="https://pinetools.com/image-gradient-generator" title="Generate linear gradient images">
+Image gradient generator
+</a></li><li><a href="https://pinetools.com/image-radial-gradient-generator" title="Generate radial gradient images">
+Image radial gradient generator
+</a></li><li><a href="https://pinetools.com/svg-converter-viewer" title="Convert SVG image to PNG, BMP or JPEG">
+SVG converter (and viewer)
+</a></li><li><a href="https://pinetools.com/blurred-frame-images-generator" title="Add blurred edges or background to enlarge image">
+Blurred frame images generator
+</a></li><li><a href="https://pinetools.com/print-screen" title="Capture a screenshot">
+Take a screenshot
+</a></li><li><a href="https://pinetools.com/remove-background-image" title="Make background transparent or fill it with any color">
+Remove background
+</a></li><li><a href="https://pinetools.com/bulk-batch-add-noise-image" title="Bulk processing, add noise to an image">
+Bulk add noise
+</a></li><li><a href="https://pinetools.com/bulk-batch-blur-image" title="Bulk processing, blur an image with different filters">
+Bulk blur image
+</a></li><li><a href="https://pinetools.com/bulk-batch-blurred-frame-images-generator" title="Batch tool, add blurred edges or background to enlarge image">
+Bulk blurred frame images generator
+</a></li><li><a href="https://pinetools.com/bulk-batch-change-image-brightness" title="Adjust the brightness of an image, bulk processing">
+Bulk change brightness
+</a></li><li><a href="https://pinetools.com/bulk-batch-brightness-contrast-image" title="Batch processing, change brightness and contrast">
+Bulk brightness and contrast
+</a></li><li><a href="https://pinetools.com/bulk-batch-channels-image" title="Modify the intensity of the color channels, batch processing">
+Bulk adjust channels
+</a></li><li><a href="https://pinetools.com/bulk-batch-clip-image" title="Clip image effect, bulk tool">
+Bulk clip image
+</a></li><li><a href="https://pinetools.com/bulk-batch-color-emboss-effect-image" title="Color emboss effect generator, bulk tool">
+Bulk color emboss effect
+</a></li><li><a href="https://pinetools.com/bulk-batch-colorize-image" title="Bulk tool, colorize an image using a selected color">
+Bulk colorize image
+</a></li><li><a href="https://pinetools.com/bulk-batch-change-image-contrast" title="Adjust the contrast of an image, batch processing">
+Bulk change contrast
+</a></li><li><a href="https://pinetools.com/bulk-batch-crop-image" title="Image cropping, bulk processing">
+Bulk crop image
+</a></li><li><a href="https://pinetools.com/bulk-batch-darken-image" title="Darken an image, bulk/batch tool">
+Bulk darken image
+</a></li><li><a href="https://pinetools.com/bulk-batch-image-edge-detection" title="Detect edges in an image, batch processing">
+Bulk edge detection
+</a></li><li><a href="https://pinetools.com/bulk-batch-image-edge-enhancement" title="Batch processing, enhance edges in an image">
+Bulk edge enhancement
+</a></li><li><a href="https://pinetools.com/bulk-batch-emboss-effect-image" title="Bulk tool, emboss effect generator">
+Bulk emboss effect
+</a></li><li><a href="https://pinetools.com/bulk-batch-equalize-image" title="Bulk tool, increment the global contrast">
+Bulk equalize image
+</a></li><li><a href="https://pinetools.com/bulk-batch-change-image-exposure" title="Adjust the exposure of an image, bulk processing">
+Bulk change exposure
+</a></li><li><a href="https://pinetools.com/bulk-batch-filters-image" title="Bulk processing, apply special filters">
+Bulk special filters
+</a></li><li><a href="https://pinetools.com/bulk-batch-flip-image" title="Bulk/batch tool, flip an image, horizontally and/or vertically">
+Bulk flip image
+</a></li><li><a href="https://pinetools.com/bulk-batch-adjust-gamma-image" title="Apply gamma adjustment to an image, bulk tool">
+Bulk adjust gamma
+</a></li><li><a href="https://pinetools.com/bulk-batch-get-colors-image" title="Bulk/batch tool, extract the color palette from an image">
+Bulk get colors from image
+</a></li><li><a href="https://pinetools.com/bulk-batch-glow-effect-image" title="Batch processing, glow image effect">
+Bulk glow effect
+</a></li><li><a href="https://pinetools.com/bulk-batch-grayscale-image" title="Batch tool, desaturate completely an image">
+Bulk grayscale image
+</a></li><li><a href="https://pinetools.com/bulk-batch-image-histogram" title="Bulk processing, generate image histogram">
+Bulk image histogram
+</a></li><li><a href="https://pinetools.com/bulk-batch-adjust-hsl-image" title="Adjust the HSL of an image, batch processing">
+Bulk adjust HSL
+</a></li><li><a href="https://pinetools.com/bulk-batch-adjust-hue-image" title="Bulk processing, adjust the hue of an image">
+Bulk adjust hue
+</a></li><li><a href="https://pinetools.com/bulk-batch-invert-image-colors" title="Bulk processing, invert image colors">
+Bulk invert colors
+</a></li><li><a href="https://pinetools.com/bulk-batch-lighten-image" title="Bulk processing, lighten up an image">
+Bulk lighten image
+</a></li><li><a href="https://pinetools.com/bulk-batch-merge-images" title="Combine images, bulk/batch tool">
+Bulk merge images
+</a></li><li><a href="https://pinetools.com/bulk-batch-pixelate-effect-image" title="Pixelate photo effect, batch processing">
+Bulk pixelate effect
+</a></li><li><a href="https://pinetools.com/bulk-batch-posterize-image" title="Bulk processing, posterize image effect">
+Bulk posterize effect
+</a></li><li><a href="https://pinetools.com/bulk-batch-random-bitmap-generator" title="Generate random image, batch tool">
+Bulk random bitmap generator
+</a></li><li><a href="https://pinetools.com/bulk-batch-remove-noise-image" title="Bulk tool, remove noise from an image">
+Bulk remove noise
+</a></li><li><a href="https://pinetools.com/bulk-batch-resize-image" title="Bulk/batch tool, change the size of an image">
+Bulk resize image
+</a></li><li><a href="https://pinetools.com/bulk-batch-rgb-channels-image" title="Get RGB color channels, batch processing">
+Bulk RGB channels
+</a></li><li><a href="https://pinetools.com/bulk-batch-rotate-image" title="Bulk processing, rotate an image">
+Bulk rotate image
+</a></li><li><a href="https://pinetools.com/bulk-batch-round-corners-image" title="Cut-off corners on an image, bulk tool">
+Bulk round corners on image
+</a></li><li><a href="https://pinetools.com/bulk-batch-change-image-saturation" title="Bulk tool, adjust the saturation of an image">
+Bulk change saturation
+</a></li><li><a href="https://pinetools.com/bulk-batch-sepia-effect-image" title="Sepia photo effect, batch tool">
+Bulk sepia effect
+</a></li><li><a href="https://pinetools.com/bulk-batch-sharpen-image" title="Sharpen an image, batch processing">
+Bulk sharpen image
+</a></li><li><a href="https://pinetools.com/bulk-batch-solarize-image" title="Solarize image effect, batch tool">
+Bulk solarize effect
+</a></li><li><a href="https://pinetools.com/bulk-batch-split-image" title="Batch tool, split an image in smaller pieces">
+Bulk split image
+</a></li><li><a href="https://pinetools.com/bulk-batch-duotone-effect-spotify" title="Apply duotone effect to a photo, batch processing">
+Bulk duotone effect (Spotify)
+</a></li><li><a href="https://pinetools.com/bulk-batch-svg-converter-viewer" title="Convert SVG image to PNG, BMP or JPEG, bulk/batch tool">
+Bulk SVG converter (and viewer)
+</a></li><li><a href="https://pinetools.com/bulk-batch-threshold-image" title="Threshold effect (black and white) generator, batch processing">
+Bulk threshold (black and white)
+</a></li><li><a href="https://pinetools.com/bulk-batch-tilt-shift-effect" title="Batch processing, tilt-shift effect generator">
+Bulk tilt-shift effect
+</a></li><li><a href="https://pinetools.com/bulk-batch-change-image-vibrance" title="Adjust the vibrance of an image, bulk tool">
+Bulk change vibrance
+</a></li><li><a href="https://pinetools.com/bulk-batch-vignette-effect-image" title="Batch tool, apply vignette effect">
+Bulk vignette effect
+</a></li></ul></li><li><a href="https://pinetools.com/c-randomness/" title="Generate random numbers, randomize lists, common distributions">
+Randomness
+</a></li><li><a href="https://pinetools.com/c-files/" title="Convert, compress, join or split">
+Files
+</a></li><li><a href="https://pinetools.com/c-programming/" title="Tools for programming and web development">
+Programming
+</a></li><li><a href="https://pinetools.com/c-videos/" title="Tools for creating, editing, cropping, trimming and merging videos">
+Videos
+</a></li> </ul>
+</div>
+<div id="links-bottom">
+<div id="icons-footer"></div>
+<ul>
+<li><a href="https://pinetools.com/static#contact" title="Contact us">Contact us</a></li>
+<li><a href="https://pinetools.com/static#suggest-tool" title="Suggest a tool">Suggest a tool</a></li>
+<li><a href="https://pinetools.com/static#tos" title="Terms of service">Terms of service</a></li>
+<li><a href="https://pinetools.com/static#privacy-policy" title="Privacy policy">Privacy policy</a></li>
+</ul>
+<div id="logo-footer"></div>
+</div>
+</div>
+</div>
+<div id="right-column-main">
+<div id="main">
+<div id="informacion-body">
+<h1>Online Image color picker</h1>
+<p class="nombre-categoria">
+In <a href="https://pinetools.com/c-images/" title="Resize images, crop, optimize and more">Images</a>
+|
+<a class="link-keywords" href="#">Keywords</a>
+|
+<a class="gracias" href="#">Thanks to...</a>
+</p>
+<div id="info-keywords" style="display: none;">
+<p>
+Keywords:
+images pictures photographs photos color picker colors pixel </p>
+</div>
+<div class="social-widgets">
+<div class="facebook-like-container social-container">
+<span class="placeholder"><span>Like</span></span>
+<div class="fb-like" data-layout="button" data-action="like" data-show-faces="false" data-share="false"></div>
+</div>
+<div class="facebook-share-container social-container">
+<span class="placeholder"><span>Share</span></span>
+<div class="fb-share-button" data-layout="button"></div>
+</div>
+<div class="twitter-container social-container">
+<span class="placeholder"><span>Tweet</span></span>
+<a class="twitter-share-button" href="https://twitter.com/intent/tweet">Tweet</a>
+</div>
+
+<div class="linkedin-container social-container">
+<span class="placeholder"><span>Share</span></span>
+<script type="IN/Share"></script>
+</div>
+<div class="reddit-container social-container">
+<span class="placeholder"><span>Share</span></span>
+<a href="https://www.reddit.com/submit?url=URL_ENCODED&title=TITLE_ENCODED" title="Share (Reddit)" target="_blank" rel="nofollow">Share</a>
+</div>
+<div class="whatsapp-container social-container">
+<span class="placeholder"><span>Share</span></span>
+<a href="https://wa.me/?text=URL_TEXT_ENCODED" title="Share (WhatsApp)" target="_blank" rel="nofollow">Share</a>
+</div>
+<div class="pinterest-container social-container">
+<span class="placeholder"><span>Save</span></span>
+<a data-pin-do="buttonBookmark" href="https://www.pinterest.com/pin/create/button/"></a>
+</div>
+</div>
+<p>Click on the image to get the color of a pixel in an image</p>
+</div>
+
+<div id="carbon-ads-container-bg" style="padding: 10px 0;">
+<div id="never-decrease-height">
+<div id="bsa-zone_1613516522746-7_123456"></div>
+</div>
+</div>
+<div id="grid-page-tool" class="grid">
+<div class="grid-sizer tam12"></div>
+<div class="grid-item tam12" id="div-grid-elemento-65e7e48626202">
+<div class="div-elemento div-elemento-input" id="div-elemento-65e7e48626202">
+<h4>Image</h4>
+<br/>
+<div class="tool-html">
+<canvas id="65e7e48626202" style="display: none;"></canvas>
+<div id="65e7e48626202-ii-drop-paste-area" class="ii-drop-paste-area">
+<label for="65e7e48626202-ii-input-file">
+<div>
+<input type="file" id="65e7e48626202-ii-input-file" name="image" />
+<input placeholder="Paste an image or image URL here..." id="65e7e48626202-ii-input-text" type="text" currentimageurl />
+</div>
+<div>
+<svg class="box__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 43.5"><path d="M48.4 26.5c-.9 0-1.7.7-1.7 1.7v11.6h-43.3v-11.6c0-.9-.7-1.7-1.7-1.7s-1.7.7-1.7 1.7v13.2c0 .9.7 1.7 1.7 1.7h46.7c.9 0 1.7-.7 1.7-1.7v-13.2c0-1-.7-1.7-1.7-1.7zm-24.5 6.1c.3.3.8.5 1.2.5.4 0 .9-.2 1.2-.5l10-11.6c.7-.7.7-1.7 0-2.4s-1.7-.7-2.4 0l-7.1 8.3v-25.3c0-.9-.7-1.7-1.7-1.7s-1.7.7-1.7 1.7v25.3l-7.1-8.3c-.7-.7-1.7-.7-2.4 0s-.7 1.7 0 2.4l10 11.6z" /></svg>
+Drop an image here...
+</div>
+</label>
+</div>
+<div id="65e7e48626202-div-image" class="widget-div-image">
+
+</div>
+<div id="65e7e48626202-ii-error-msg" class="widget-ii-error-msg">
+
+</div>
+</div> </div>
+</div>
+<div class="grid-item tam12" id="div-grid-elemento-65e7e4862620c">
+<div class="div-elemento div-elemento-output" id="div-elemento-65e7e4862620c">
+<h4>Color</h4>
+<br/>
+<div class="tool-html">
+<div class="rowWidgJsTools">
+<div class="colWidgJsTools">
+<div class="cont-col1-widg-color">
+<input type="hidden" name="colorOut" id="65e7e4862620c" />
+</div>
+</div>
+<div class="colWidgJsTools">
+<div class="cont-col2-widg-color">
+<div id="65e7e4862620c-div-color-values"></div>
+</div>
+</div>
+</div>
+</div> </div>
+</div>
+</div>
+<div id="contBotEjec">
+<span class="boton" onclick="ejecutarTool(this);">
+Pick color!
+</span>
+<span class="noBoton">
+Loading...
+</span>
+</div>
+<div id="info-gracias" style="display: none;">We use and thanks for these <b>great</b> tools:<br/><ul class="lista-gracias"><li><a href="https://jquery.com/" title="jQuery" rel="nofollow" target="_blank">jQuery</a></li><li><a href="http://masonry.desandro.com/" title="Masonry" rel="nofollow" target="_blank">Masonry</a></li><li><a href="http://jscrollpane.kelvinluck.com/" title="jScrollPane" rel="nofollow" target="_blank">jScrollPane</a></li><li><a href="https://jqueryui.com/" title="jQuery UI" rel="nofollow" target="_blank">jQuery UI</a></li><li><a href="http://bgrins.github.io/spectrum/" title="Spectrum colorpicker" rel="nofollow" target="_blank">Spectrum colorpicker</a></li></ul></div>
+</div>
+</div>
+</div>
+</div>
+<div id="aviso_cookies">
+<div>
+<p>
+<a href="#" class="a_boton_cerrar">Got it!</a>
+<a href="https://pinetools.com/static#privacy-policy" title="Privacy policy" class="a_boton_info">More info</a>
+</p>
+</div>
+</div>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZJ8TD2BX7E"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZJ8TD2BX7E');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> hometest </title>
+        <meta name="description" content="Webpage">
+        <link rel="stylesheet" href="css/hometest.css">
+    </head>
+
+    <body>
+        <header>
+            <h1>LAYDUNA</h1>
+        </header>
+        <main>
+            <div>
+                <section class = shade>
+                    <h2>Foundation shade for you</h2>
+                    <h3>เฉดสีรองพื้นที่ได้จากการวิเคราะห์สีผิว</h3>
+
+                    <div class = choose>
+                        <ul>
+                            <% users.forEach(function(user) { %>
+                                <li>
+                                    ID: <%= user.id %>, R: <%= user.colorR %>, G: <%= user.colorG %>, B: <%= user.colorB %>
+                                </li>
+                                <script>
+                                    
+                                </script>
+                            <% }); %>
+                        </ul>
+                    </div>
+                </section>
+    
+                <section class = range>
+                    <h4>Range</h4>
+                </section>
+            </div>
+            
+            <section class = image>
+                <h5>Image</h5>
+                <% users.forEach(function(user) { %>
+                    <img src = "<%= user.image %>" alt = "User Image">
+                <% }); %>
+            </section>
+
+        </main>
+    </body>
+
+</html>
