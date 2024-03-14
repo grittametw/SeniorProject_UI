@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hometest</title>
+    <meta name="description" content="Webpage">
+    <link rel="stylesheet" href="css/hometest.css">
+</head>
+
+<body>
+    <header>
+        <h1>LAYDUNA</h1>
+    </header>
+
+    <main>
+        <div>
+            <section class="shade">
+                <h2>Foundation shade for you</h2>
+                <h3>เฉดสีรองพื้นที่ได้จากการวิเคราะห์สีผิว</h3>
+
+                <div class="choose">
+                    <ul id="userList">
+                    </ul>
+                </div>
+            </section>
+
+            <section class="range">
+                <h4>Range</h4>
+            </section>
+        </div>
+
+        <section class="image">
+            <h5>Image</h5>
+        </section>
+    </main>
+
+    <script>
+        function analyzeSkinColor(colorR, colorG, colorB) {
+            if (colorR > 200 && colorG > 100 && colorB < 150) {
+                return "Light";
+            } else if (colorR > 150 && colorG > 50 && colorB < 100) {
+                return "Medium";
+            } else {
+                return "Dark";
+            }
+        }
+
+        // ข้อมูลผู้ใช้ที่ได้รับมาจากฐานข้อมูล
+        const users = [
+
+            { id: 1, colorR: 249, colorG: 202, colorB: 183, image: "path/to/image1.jpg" },
+            { id: 2, colorR: 255, colorG: 215, colorB: 180, image: "path/to/image2.jpg" },
+            
+        ];
+
+        // สร้าง element ของรายการผู้ใช้และภาพ
+        const userList = document.getElementById('userList');
+        const imageSection = document.querySelector('.image');
+
+        // แสดงข้อมูลผู้ใช้และภาพผู้ใช้
+        users.forEach(function(user) {
+            // สร้าง element ของรายการผู้ใช้
+            const listItem = document.createElement('li');
+            listItem.textContent = `ID: ${user.id}, R: ${user.colorR}, G: ${user.colorG}, B: ${user.colorB}, Skin Tone: ${analyzeSkinColor(user.colorR, user.colorG, user.colorB)}`;
+            userList.appendChild(listItem);
+
+            // สร้าง element ของภาพผู้ใช้
+            const userImage = document.createElement('img');
+            userImage.src = user.image;
+            userImage.alt = "User Image";
+            imageSection.appendChild(userImage);
+        });
+    </script>
+</body>
+</html>
