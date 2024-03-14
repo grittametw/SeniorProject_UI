@@ -1,7 +1,5 @@
 var express = require( 'express' )
 var mysql = require( 'mysql2' )
-var ejs = require('ejs')
-var path = require('path')
 
 var database = mysql.createConnection({
     host: "localhost",
