@@ -20,7 +20,7 @@ app.listen(3000, function () {
     console.log("Server listening on port: 3000")
 })
 
-app.get('/hometest', function (req, res, next) {
+app.get('/', function (req, res, next) {
     database.query(
         'SELECT * FROM `users`',
         function(err, results, fields) {
@@ -63,7 +63,7 @@ app.get('/hometest', function (req, res, next) {
                 }
             }
 
-            res.render('hometest', { users: results, closestColor: closestColor });
+            res.render('home', { users: results, closestColor: closestColor });
         }
     );
 })
