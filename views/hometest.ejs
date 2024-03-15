@@ -24,13 +24,25 @@
                     <ul>
                         <% users.forEach(function(user) { %>
                             <li>
-                                R: <%= user.colorR %>, G: <%= user.colorG %>, B: <%= user.colorB %>
+                                R: <%= user.colorR %> 
+                                G: <%= user.colorG %> 
+                                B: <%= user.colorB %>
                             </li>
                         <% }); %>
                     </ul>
                 </div>
 
-                <div class="tone">
+                <div class = "tone">
+                    <style>
+                        :root {
+                            --R: <%= closestColor.R %>;
+                            --G: <%= closestColor.G %>;
+                            --B: <%= closestColor.B %>;
+                        }
+                        .tone {
+                            background-color: rgb(var(--R), var(--G), var(--B));
+                        }
+                    </style>
                 </div>
             </section>
 
