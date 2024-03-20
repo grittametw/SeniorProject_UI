@@ -26,11 +26,10 @@
                         background-color: rgb(var(--R), var(--G), var(--B));
                     }
                 </style>
-                <h2>
-                    <%= closestColor.name %>
-                    <br>
-                    Foundation shade for you
-                </h2>
+                <div class = "text">
+                    <h2><%= closestColor.name %></h2>
+                    <h3>Foundation shade for you</h3>
+                </div>
             </div>
     
             <div class="color-foundation">
@@ -119,6 +118,7 @@
             <% users.forEach(function(user) { %>
                 <img src = "<%= user.image %>" alt = "User Image">
             <% }); %>
+            ...
         </section>
     </main>
 
