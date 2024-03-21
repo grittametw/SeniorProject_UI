@@ -202,7 +202,6 @@ app.get('/:id', function (req, res, next) {
     });
 })
 
-  
 app.post('/User', function (req, res, next) {
     database.query(
         'INSERT INTO `User`(`color_r`, `color_g`, `color_b`, `image`) VALUES (?, ?, ?, ?)',
